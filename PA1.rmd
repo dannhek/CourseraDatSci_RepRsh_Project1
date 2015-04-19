@@ -1,0 +1,84 @@
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Loading and preprocessing the data
+```{r load,echo=TRUE}
+#Assume we've got the correct working directory.
+library(ggplot2);library(plyr) #using these later
+activity <- read.csv("activity.csv")
+summary(activity) #What are we looking at here?
+activity$date <- as.Date(as.character(activity$date))
+activity$interval <- as.integer(activity$interval)
+```
+## What is mean total number of steps taken per day?
+```{r byDay,echo=TRUE}
+#First, let's get the data aggregated by day
+activity.byDay <- ddply(activity,.(date),summarize,steps=sum(steps))
+#Second,Let's look at what we have
+head(activity.byDay)
+qplot(steps,data=activity.byDay,geom="histogram",main="Steps per Day",xlab="Steps")
+#Third, let's get the Mean and Median by Day
+mean(activity.byDay$steps,na.rm=TRUE)
+median(activity.byDay$steps,na.rm=TRUE)
+```  
+## What is the average daily activity pattern?
+```{r byInt,echo=TRUE}
+#First, let's get summarize the daily data into something overtime
+activity.byInt <- ddply(activity,.(interval),summarize,steps=mean(steps,na.rm=TRUE))
+#Second, let's look at what we have
+qplot(data=activity.byInt,x=interval,y=steps,group=1,geom="line")
+#Third, find the maximum average interval
+maxIndex <- which.max(activity.byInt$steps)
+maxSteps <- activity.byInt$steps[maxIndex]
+maxIntvl <- activity.byInt$interval[maxIndex]
+as.integer(c(maxIndex,maxSteps,maxIntvl))
+#So index 104, interval 835 for 206.17 steps, which correponds to the time
+paste(maxIntvl%/%60,maxIntvl%%60,sep=":")
+```  
+
+
+## Imputing missing values
+```{r missing_vals,echo=TRUE}
+#How many NA Values do we have?
+sum(is.na(activity$steps))
+#Strategy for filling in NA Value: mean of previous and subsequent intervals
+rm(activity_sansNA)
+rm(activity_sansNA)
+activity_sansNA <- activity
+for (i in 1:nrow(activity_sansNA)) {
+     if (is.na(activity_sansNA$steps[i])) {
+          preVal <- activity_sansNA$steps[i-1]
+          nxtVal <- activity_sansNA$steps[i+1]
+          newVal <- mean(c(preVal,nxtVal),na.rm=TRUE)
+          if (is.nan(newVal)) {activity_sansNA$steps[i] <- 0}
+          else {activity_sansNA$steps[i] <- newVal}  
+          
+     }
+}
+summary(activity_sansNA)
+#First, let's get the data aggregated by day
+activity.byDay2 <- ddply(activity_sansNA,.(date),summarize,steps=sum(steps))
+#Second,Let's look at what we have
+head(activity.byDay2)
+qplot(activity.byDay2$steps,geom="histogram",main="Steps per Day",xlab="Steps")
+#Third, let's get the Mean and Median by Day
+mean(activity.byDay2$steps,na.rm=FALSE)
+median(activity.byDay2$steps,na.rm=FALSE)
+```
+
+## Are there differences in activity patterns between weekdays and weekends?
+```{r weekends}
+#First, add a column for weekend vs weekday
+isweekend<-factor(weekdays(as.Date(activity_sansNA$date)) %in% c('Saturday','Sunday'),labels=c("Weekend","Weekday"))
+activity_sansNA<-cbind(activity_sansNA,isweekend)
+#Second, sum up steps
+activity.byInt2 <- aggregate(steps ~ interval + isweekend,data=activity_sansNA,sum)
+#And plot it
+qplot(data=activity.byInt2,x=interval,y=steps,geom="line",color=isweekend) 
+
+```
