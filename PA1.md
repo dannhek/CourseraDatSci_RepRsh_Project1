@@ -88,7 +88,7 @@ med<-median(activity.byDay$steps,na.rm=TRUE) ; med
 ```
 ## [1] 10765
 ```
-We can see that the number of steps taken daily is approximately symetrical with mean 1.0766189\times 10^{4} and median 10765 steps.  
+We can see that the number of steps taken daily is approximately symetrical with mean 1.076619\times 10^{4} and median 10765 steps.  
   
   
 ## What is the average daily activity pattern?
@@ -102,10 +102,11 @@ Then we use core R functions to identify the interval with the most steps and co
 activity.byInt <- ddply(activity,.(interval),summarize,steps=mean(steps,na.rm=TRUE))
 #Second, let's look at what we have
 line<-qplot(data=activity.byInt,
-             x=seq_along(interval),
+             x=interval,
              y=steps,group=1,geom="line") + 
              xlab("Time (5-minute interval)") +     
-             ggtitle("Fig2. Activity throughout the Day")
+             ggtitle("Fig2. Activity throughout the Day") +
+             scale_x_continuous(labels=c("00:00","06:00","12:00","18:00","24:00"))
 line
 ```
 
@@ -128,12 +129,12 @@ maxIntvl <- activity.byInt$interval[maxIndex]; maxIntvl
 ```
 ## [1] 08:35:00
 ```
-So on average, activity peaks between 8:35 and 8:40 AM with an average of 206 steps during that 5 minute period.  
+So on average, activity peaks between 0.3576389 and 0.3611111 with an average of 206 steps during that 5 minute period.  
 
 ## Imputing missing values
 In the two previous examples, we just ignored NA values, but what if we were to calculate the NA values based on the surrounding data?
 
-To do this, we will loop through all the steps rows, and for each missing value, we will calculate the average of the two surrounding values. If either value is NA, then we will impute 0 steps for that row, otherwise we will impute the mean of the preceeding and following rows.
+To do this, we will loop through all the steps rows, and for each missing value, we will calculate the presumed number of steps based on the number of steps in the two surrounding values. If either value is NA, then we will impute 0 steps for that row, otherwise we will impute the arithmetic mean of the preceeding and following rows.
 
 For example, suppose we had the following step data:  
 NA, NA, 20, 5, 0, NA, NA, 5, 20, NA, 20
@@ -155,22 +156,6 @@ sum(is.na(activity$steps))
 
 ```r
 #Strategy for filling in NA Value: mean of previous and subsequent intervals
-rm(activity_sansNA)
-```
-
-```
-## Warning in rm(activity_sansNA): object 'activity_sansNA' not found
-```
-
-```r
-rm(activity_sansNA)
-```
-
-```
-## Warning in rm(activity_sansNA): object 'activity_sansNA' not found
-```
-
-```r
 activity_sansNA <- activity
 for (i in 1:nrow(activity_sansNA)) {
      if (is.na(activity_sansNA$steps[i])) {
@@ -237,10 +222,10 @@ median(activity.byDay2$steps,na.rm=TRUE)
 ```
 ## [1] 10395
 ```
-We can see that generally speaking, if a day has any NAs, most of that day is NA, which makes sense given our data source. If a person forgets to wear his or her pedometer, then that will register as 0 steps for that day.  
+We can see that generally speaking, if a day has any NAs, most of that day is NA, which makes sense given our data source. If a person forgets to wear his or her pedometer, then that will register as 0 steps for that day. For obvious reasons, the mean is much more affected by the increased number of days with 0 steps than the median is.  
 
 ## Are there differences in activity patterns between weekdays and weekends?
-To see if there are any differences in behavior on the weekend vs. weekday (as we expect there would be), we can create a new column and use ggplot2's color parameter to distinguish between average weekday or weekend activity.
+To see if there are any differences in behavior on the weekend vs. weekday (as we expect there would be), we can create a new column and use ggplot2's `color` parameter to distinguish between average weekday or weekend activity.
 
 
 ```r
@@ -261,35 +246,52 @@ line2
 ```
 
 ![](PA1_files/figure-html/weekends-1.png) 
-One thing to note is that our average vs. sum activity is very different as we can see below. This is likely the result of different likelihoods of forgetting a pedometer. 
+We can see from this graph that our annonymous pedometer wearer is much more active on weekends than week days, and may even have a routine saturday morning jog that he or she doesn't do on weekdays.  
 
-
-```r
-activity.byInt3 <- aggregate(steps ~ interval + isweekend,data=activity_sansNA,sum)
-#And plot it
-line3<-qplot(data=activity.byInt3,
-             x=interval,
-             y=steps,geom="line",
-             color=isweekend) +
-             ggtitle("Fig5. Activity throughout the Day") + 
-             xlab("Time (5-minute interval)") +
-             scale_x_continuous(labels=c("00:00","06:00","12:00","18:00","24:00"))
-line3
-```
-
-![](PA1_files/figure-html/weekends3-1.png) 
 
 
 ###Appendix: Save off figures
-Per the project guidelines, we also need to save off the figures.
+Per the project guidelines, we also need to save off the figures to their own directory.  
 
 ```r
-if (file.exists("./figures")) {setwd("./figures")} 
-#else {dir.create("./figures") ; setwd("./figures")}
+if (file.exists("./figures")) {setwd("./figures")
+} else {dir.create("./figures") ; setwd("./figures")}
 
-# png(file="Figure1.png"); hist; dev.off()   
-# png(file="Figure2.png"); line; dev.off()   
-# png(file="Figure3.png"); hist2; dev.off() 
-# png(file="Figure4.png"); line2; dev.off() 
-# png(file="Figure5.png"); line3; dev.off() 
+png(file="Figure1.png"); hist; dev.off()   
+```
+
+```
+## png 
+##   2
+```
+
+```r
+png(file="Figure2.png"); line; dev.off()   
+```
+
+```
+## png 
+##   2
+```
+
+```r
+png(file="Figure3.png"); hist2; dev.off() 
+```
+
+```
+## png 
+##   2
+```
+
+```r
+png(file="Figure4.png"); line2; dev.off() 
+```
+
+```
+## png 
+##   2
+```
+
+```r
+setwd("..") #go back to original directory
 ```

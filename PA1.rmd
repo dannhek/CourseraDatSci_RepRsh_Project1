@@ -61,7 +61,7 @@ Then we use core R functions to identify the interval with the most steps and co
 activity.byInt <- ddply(activity,.(interval),summarize,steps=mean(steps,na.rm=TRUE))
 #Second, let's look at what we have
 line<-qplot(data=activity.byInt,
-             x=seq_along(interval),
+             x=interval,
              y=steps,group=1,geom="line") + 
              xlab("Time (5-minute interval)") +     
              ggtitle("Fig2. Activity throughout the Day") +
@@ -115,7 +115,7 @@ hist2
 mean(activity.byDay2$steps,na.rm=TRUE)
 median(activity.byDay2$steps,na.rm=TRUE)
 ```
-We can see that generally speaking, if a day has any NAs, most of that day is NA, which makes sense given our data source. If a person forgets to wear his or her pedometer, then that will register as 0 steps for that day.  
+We can see that generally speaking, if a day has any NAs, most of that day is NA, which makes sense given our data source. If a person forgets to wear his or her pedometer, then that will register as 0 steps for that day. For obvious reasons, the mean is much more affected by the increased number of days with 0 steps than the median is.  
 
 ## Are there differences in activity patterns between weekdays and weekends?
 To see if there are any differences in behavior on the weekend vs. weekday (as we expect there would be), we can create a new column and use ggplot2's `color` parameter to distinguish between average weekday or weekend activity.
@@ -136,33 +136,19 @@ line2<-qplot(data=activity.byInt2,
              scale_x_continuous(labels=c("00:00","06:00","12:00","18:00","24:00"))
 line2
 ```  
-One thing to note is that our average vs. sum activity is very different as we can see below. This is likely the result of different likelihoods of forgetting to wear a pedometer on a weekend vs. a weekday.  
+We can see from this graph that our annonymous pedometer wearer is much more active on weekends than week days, and may even have a routine saturday morning jog that he or she doesn't do on weekdays.  
 
-```{r weekends3, warning=FALSE}
-activity.byInt3 <- aggregate(steps ~ interval + isweekend,data=activity_sansNA,sum)
-#And plot it
-line3<-qplot(data=activity.byInt3,
-             x=interval,
-             y=steps,geom="line",
-             color=isweekend) +
-             ggtitle("Fig5. Activity throughout the Day") + 
-             xlab("Time (5-minute interval)") +
-             scale_x_continuous(labels=c("00:00","06:00","12:00","18:00","24:00"))
-line3
-```
 
 
 ###Appendix: Save off figures
-Per the project guidelines, we also need to save off the figures.
+Per the project guidelines, we also need to save off the figures to their own directory.  
 ```{r figures}
-if (file.exists("./figures")) {setwd("./figures")} 
-else {dir.create("./figures") ; setwd("./figures")}
+if (file.exists("./figures")) {setwd("./figures")
+} else {dir.create("./figures") ; setwd("./figures")}
 
 png(file="Figure1.png"); hist; dev.off()   
 png(file="Figure2.png"); line; dev.off()   
 png(file="Figure3.png"); hist2; dev.off() 
 png(file="Figure4.png"); line2; dev.off() 
-png(file="Figure5.png"); line3; dev.off() 
 setwd("..") #go back to original directory
-
 ```
