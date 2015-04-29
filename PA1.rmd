@@ -162,6 +162,7 @@ png(file="Figure1.png"); hist; dev.off()
 png(file="Figure2.png"); line; dev.off()   
 png(file="Figure3.png"); hist2; dev.off() 
 png(file="Figure4.png"); line2; dev.off() 
-# png(file="Figure5.png"); line3; dev.off() 
+png(file="Figure5.png"); line3; dev.off() 
+setwd("..") #go back to original directory
 
 ```
