@@ -1,5 +1,1 @@
 Things to Fix in HTML File
-	Give Description of Variables in dataset 
-	Make Histogram prettier
-	Reconcile difference between summary(activity) giving mean of 806 and the histogram showing a mean much larger than that
-	Suppress warnings in code outputs
