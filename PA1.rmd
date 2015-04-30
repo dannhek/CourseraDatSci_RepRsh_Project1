@@ -135,8 +135,8 @@ line2<-qplot(data=activity.byInt2,
               xlab("Time (5-minute interval)") +
              scale_x_continuous(labels=c("00:00","06:00","12:00","18:00","24:00"))
 line2
-```  
-We can see from this graph that our annonymous pedometer wearer is much more active on weekends than week days, and may even have a routine saturday morning jog that he or she doesn't do on weekdays.  
+```    
+We can see from this graph that our annonymous pedometer wearer is slightly more active on weekdays, but tends to rise earlier on weekends, and is also more likely to take what appears to be an 8:30 AM jog. 
 
 
 

@@ -246,7 +246,7 @@ line2
 ```
 
 ![](PA1_files/figure-html/weekends-1.png) 
-We can see from this graph that our annonymous pedometer wearer is much more active on weekends than week days, and may even have a routine saturday morning jog that he or she doesn't do on weekdays.  
+We can see from this graph that our annonymous pedometer wearer is slightly more active on weekdays, but tends to rise earlier on weekends, and is also more likely to take what appears to be an 8:30 AM jog. 
 
 
 
