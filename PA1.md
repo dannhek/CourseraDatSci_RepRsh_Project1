@@ -11,7 +11,32 @@ For preprocessing, we must load the data into a data frame in R, and make sure R
 
 ```r
 #Assume we've got the correct working directory.
-library(ggplot2);library(plyr);library(chron) #using these later
+#Load the libraries we'll need to use later
+if (!require(ggplot2)) install.packages("ggplot2")
+```
+
+```
+## Loading required package: ggplot2
+```
+
+```r
+if (!require(plyr)) install.packages("plyr")
+```
+
+```
+## Loading required package: plyr
+```
+
+```r
+if (!require(chron)) install.packages("chron")
+```
+
+```
+## Loading required package: chron
+```
+
+```r
+library(ggplot2);library(plyr);library(chron) 
 activity <- read.csv("activity.csv")
 summary(activity) #What are we looking at here?
 ```
@@ -254,8 +279,8 @@ We can see from this graph that our annonymous pedometer wearer is slightly more
 Per the project guidelines, we also need to save off the figures to their own directory.  
 
 ```r
-if (file.exists("./figures")) {setwd("./figures")
-} else {dir.create("./figures") ; setwd("./figures")}
+#if (file.exists("./figures")) {setwd("./figures")
+#} else {dir.create("./figures") ; setwd("./figures")}
 
 png(file="Figure1.png"); hist; dev.off()   
 ```

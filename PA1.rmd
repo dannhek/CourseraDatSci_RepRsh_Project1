@@ -3,6 +3,7 @@ title: "Reproducible Research: Peer Assessment 1"
 output: 
   html_document:
     keep_md: true
+  
 ---
      Author: Dann Hekman
      Date  : 2015-04-29
@@ -15,7 +16,11 @@ This device collects data at 5 minute intervals through out the day. The dataset
 For preprocessing, we must load the data into a data frame in R, and make sure R views the dates and intervals as the correct classes for further processing.  
 ```{r load,echo=TRUE,warning=FALSE}
 #Assume we've got the correct working directory.
-library(ggplot2);library(plyr);library(chron) #using these later
+#Load the libraries we'll need to use later
+if (!require(ggplot2)) install.packages("ggplot2")
+if (!require(plyr)) install.packages("plyr")
+if (!require(chron)) install.packages("chron")
+library(ggplot2);library(plyr);library(chron) 
 activity <- read.csv("activity.csv")
 summary(activity) #What are we looking at here?
 activity$date <- as.Date(as.character(activity$date))
@@ -143,8 +148,8 @@ We can see from this graph that our annonymous pedometer wearer is slightly more
 ###Appendix: Save off figures
 Per the project guidelines, we also need to save off the figures to their own directory.  
 ```{r figures}
-if (file.exists("./figures")) {setwd("./figures")
-} else {dir.create("./figures") ; setwd("./figures")}
+#if (file.exists("./figures")) {setwd("./figures")
+#} else {dir.create("./figures") ; setwd("./figures")}
 
 png(file="Figure1.png"); hist; dev.off()   
 png(file="Figure2.png"); line; dev.off()   
