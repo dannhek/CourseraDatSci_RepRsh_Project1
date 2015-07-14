@@ -53,7 +53,7 @@ hist
 avg<-mean(activity.byDay$steps,na.rm=TRUE) ; avg
 med<-median(activity.byDay$steps,na.rm=TRUE) ; med
 ```    
-We can see that the number of steps taken daily is approximately symetrical with mean `r round(avg,digits=2)` and median `r I(med)` steps.  
+We can see that the number of steps taken daily is approximately symetrical with mean `r format(avg,digits=6)` and median `r I(med)` steps.  
   
   
 ## What is the average daily activity pattern?
@@ -77,7 +77,7 @@ maxIndex <- which.max(activity.byInt$steps)
 maxSteps <- activity.byInt$steps[maxIndex]; maxSteps
 maxIntvl <- activity.byInt$interval[maxIndex]; maxIntvl
 ```  
-So on average, activity peaks between `r I(maxIntvl)` and `r I(maxIntvl+times("00:05:00"))` with an average of `r round(maxSteps,digits=0)` steps during that 5 minute period.  
+So on average, activity peaks between 08:35:00 AM and 08:40:00 AM with an average of `r format(maxSteps,digits=4)` steps during that 5 minute period.  
 
 ## Imputing missing values
 In the two previous examples, we just ignored NA values, but what if we were to calculate the NA values based on the surrounding data?
@@ -144,12 +144,11 @@ line2
 We can see from this graph that our annonymous pedometer wearer is slightly more active on weekdays, but tends to rise earlier on weekends, and is also more likely to take what appears to be an 8:30 AM jog. 
 
 
-
 ###Appendix: Save off figures
 Per the project guidelines, we also need to save off the figures to their own directory.  
-```{r figures}
-#if (file.exists("./figures")) {setwd("./figures")
-#} else {dir.create("./figures") ; setwd("./figures")}
+```{r figures,results='hide'}
+if (file.exists("./figures")) {setwd("./figures")
+} else {dir.create("./figures") ; setwd("./figures")}
 
 png(file="Figure1.png"); hist; dev.off()   
 png(file="Figure2.png"); line; dev.off()   

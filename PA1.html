@@ -113,7 +113,7 @@ avg&lt;-mean(activity.byDay$steps,na.rm=TRUE) ; avg</code></pre>
 <pre><code>## [1] 10766.19</code></pre>
 <pre class="r"><code>med&lt;-median(activity.byDay$steps,na.rm=TRUE) ; med</code></pre>
 <pre><code>## [1] 10765</code></pre>
-<p>We can see that the number of steps taken daily is approximately symetrical with mean 1.07661910^{4} and median 10765 steps.</p>
+<p>We can see that the number of steps taken daily is approximately symetrical with mean 10766.2 and median 10765 steps.</p>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
@@ -136,7 +136,7 @@ maxSteps &lt;- activity.byInt$steps[maxIndex]; maxSteps</code></pre>
 <pre><code>## [1] 206.1698</code></pre>
 <pre class="r"><code>maxIntvl &lt;- activity.byInt$interval[maxIndex]; maxIntvl</code></pre>
 <pre><code>## [1] 08:35:00</code></pre>
-<p>So on average, activity peaks between 0.3576389 and 0.3611111 with an average of 206 steps during that 5 minute period.</p>
+<p>So on average, activity peaks between 08:35:00 AM and 08:40:00 AM with an average of 206.2 steps during that 5 minute period.</p>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
@@ -212,22 +212,14 @@ line2</code></pre>
 <div id="appendix-save-off-figures" class="section level3">
 <h3>Appendix: Save off figures</h3>
 <p>Per the project guidelines, we also need to save off the figures to their own directory.</p>
-<pre class="r"><code>#if (file.exists(&quot;./figures&quot;)) {setwd(&quot;./figures&quot;)
-#} else {dir.create(&quot;./figures&quot;) ; setwd(&quot;./figures&quot;)}
+<pre class="r"><code>if (file.exists(&quot;./figures&quot;)) {setwd(&quot;./figures&quot;)
+} else {dir.create(&quot;./figures&quot;) ; setwd(&quot;./figures&quot;)}
 
-png(file=&quot;Figure1.png&quot;); hist; dev.off()   </code></pre>
-<pre><code>## png 
-##   2</code></pre>
-<pre class="r"><code>png(file=&quot;Figure2.png&quot;); line; dev.off()   </code></pre>
-<pre><code>## png 
-##   2</code></pre>
-<pre class="r"><code>png(file=&quot;Figure3.png&quot;); hist2; dev.off() </code></pre>
-<pre><code>## png 
-##   2</code></pre>
-<pre class="r"><code>png(file=&quot;Figure4.png&quot;); line2; dev.off() </code></pre>
-<pre><code>## png 
-##   2</code></pre>
-<pre class="r"><code>setwd(&quot;..&quot;) #go back to original directory</code></pre>
+png(file=&quot;Figure1.png&quot;); hist; dev.off()   
+png(file=&quot;Figure2.png&quot;); line; dev.off()   
+png(file=&quot;Figure3.png&quot;); hist2; dev.off() 
+png(file=&quot;Figure4.png&quot;); line2; dev.off() 
+setwd(&quot;..&quot;) #go back to original directory</code></pre>
 </div>
 </div>
 
